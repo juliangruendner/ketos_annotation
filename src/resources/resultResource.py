@@ -1,5 +1,6 @@
 from flask_restful import fields, marshal_with, reqparse
 from flask_restful_swagger_2 import swagger, Resource
+from resources.scaleEntryResource import scale_entry_fields
 import rdb.models.result as Result
 
 result_fields = {
@@ -7,7 +8,8 @@ result_fields = {
     'scale_entry_id': fields.Integer,
     'annotator_id': fields.Integer,
     'entry_id': fields.Integer,
-    'task_id': fields.Integer
+    'task_id': fields.Integer,
+    'scale_entry': fields.Nested(scale_entry_fields)
 }
 
 
