@@ -17,6 +17,7 @@ class AnnotationTask(db.Model):
     scale_entries = db.relationship('ScaleEntry', lazy='select', cascade='delete, delete-orphan', backref='task')
     annotators = db.relationship('Annotator', lazy='select', cascade='delete, delete-orphan', backref='task')
     entries = db.relationship('Entry', lazy='select', cascade='delete, delete-orphan', backref='task')
+    results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='task')
 
     def __init__(self):
         super(AnnotationTask, self).__init__()
@@ -42,16 +43,16 @@ def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=Non
     db.session.add(at)
     db.session.commit()
 
-    annotators = list()
+    data = requests.get('http://data_pre:5000/aggregation/' + crawler_job_id + '?output_type=json&aggregation_type=latest').json()
+    entries = list()
+    for d in data:
+        e = Entry.create(patient_id=d['patient_id'], json=str(d['entries']), task_id=at.id)
+        entries.append(e)
+
     if number_of_annotators:
         for i in range(0, number_of_annotators):
             a = Annotator.create(name=str(i), task_id=at.id)
-            annotators.append(a)
-
-    data = requests.get('http://data_pre:5000/aggregation/' + crawler_job_id + '?output_type=json&aggregation_type=latest').json()
-    for d in data:
-        e = Entry.create(patient_id=d['patient_id'], json=str(d['entries']), task_id=at.id)
-        e.annotators = annotators
+            a.entries = entries
 
     db.session.commit()
 

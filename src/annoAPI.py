@@ -4,6 +4,9 @@ from rdb.rdb import connect_to_db, create_all
 from flask_cors import CORS
 from resources.annotationTaskResource import AnnotationTaskResource, AnnotationTaskListResource, UserAnnotationTaskListResource
 from resources.entryResource import AnnotationTaskEntryListResource
+from resources.scaleEntryResource import AnnotationTaskScaleEntryListResource
+from resources.annotatorResource import AnnotationTaskAnnotatorListResource
+from resources.resultResource import AnnotationTaskResultListResource, AnnotatorResultListResource
 import json
 import logging
 import logging.config
@@ -23,6 +26,10 @@ api.add_resource(AnnotationTaskResource, '/annotation_tasks/<int:task_id>', endp
 api.add_resource(AnnotationTaskListResource, '/annotation_tasks', endpoint='annotation_tasks')
 api.add_resource(UserAnnotationTaskListResource, '/users/<int:user_id>/annotation_tasks', endpoint='annotation_tasks_for_user')
 api.add_resource(AnnotationTaskEntryListResource, '/annotation_tasks/<int:task_id>/entries', endpoint='entries_for_annotation_task')
+api.add_resource(AnnotationTaskScaleEntryListResource, '/annotation_tasks/<int:task_id>/scale_entries', endpoint='scale_entries_for_annotation_task')
+api.add_resource(AnnotationTaskAnnotatorListResource, '/annotation_tasks/<int:task_id>/annotators', endpoint='annotators_for_annotation_task')
+api.add_resource(AnnotationTaskResultListResource, '/annotation_tasks/<int:task_id>/results', endpoint='results_for_annotation_task')
+api.add_resource(AnnotatorResultListResource, '/annotators/<int:annotator_id>/results', endpoint='results_for_annotator')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

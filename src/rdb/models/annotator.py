@@ -26,10 +26,13 @@ class Annotator(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-def create(name, task_id):
+def create(name, task_id, entries=None):
     a = Annotator()
     a.name = name
     a.task_id = task_id
+
+    if entries:
+        a.entries = entries
 
     db.session.add(a)
     db.session.commit()
