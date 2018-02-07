@@ -10,6 +10,7 @@ class Annotator(db.Model):
     name = db.Column(db.Text)
     task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
     results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='annotator')
+    entries = db.relationship('Entry', lazy=True, secondary='annotator_entries')
 
     def __init__(self):
         super(Annotator, self).__init__()

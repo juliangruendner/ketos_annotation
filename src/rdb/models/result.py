@@ -10,7 +10,7 @@ class Result(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     scale_entry_id = db.Column(db.Integer, db.ForeignKey('scale_entry.id'), nullable=False)
     annotator_id = db.Column(db.Integer, db.ForeignKey('annotator.id'), nullable=False)
-    task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
+    entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
 
     def __init__(self):
         super(Result, self).__init__()

@@ -3,6 +3,7 @@ from flask_restful_swagger_2 import Api
 from rdb.rdb import connect_to_db, create_all
 from flask_cors import CORS
 from resources.annotationTaskResource import AnnotationTaskResource, AnnotationTaskListResource, UserAnnotationTaskListResource
+from resources.entryResource import AnnotationTaskEntryListResource
 import json
 import logging
 import logging.config
@@ -21,6 +22,7 @@ CORS(app)
 api.add_resource(AnnotationTaskResource, '/annotation_tasks/<int:task_id>', endpoint='annotation_task')
 api.add_resource(AnnotationTaskListResource, '/annotation_tasks', endpoint='annotation_tasks')
 api.add_resource(UserAnnotationTaskListResource, '/users/<int:user_id>/annotation_tasks', endpoint='annotation_tasks_for_user')
+api.add_resource(AnnotationTaskEntryListResource, '/annotation_tasks/<int:task_id>/entries', endpoint='entries_for_annotation_task')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

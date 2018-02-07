@@ -31,6 +31,8 @@ def create_all():
     from rdb.models.scaleEntry import ScaleEntry
     from rdb.models.annotator import Annotator
     from rdb.models.result import Result
+    from rdb.models.entry import Entry
+    from rdb.models.annotatorEntries import AnnotatorEntries
 
     db.create_all()
     db.session.commit()

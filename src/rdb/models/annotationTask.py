@@ -1,4 +1,7 @@
 from rdb.rdb import db
+import rdb.models.entry as Entry
+import rdb.models.annotator as Annotator
+import requests
 
 
 class AnnotationTask(db.Model):
@@ -13,7 +16,7 @@ class AnnotationTask(db.Model):
     anno_type = db.Column(db.Integer)
     scale_entries = db.relationship('ScaleEntry', lazy='select', cascade='delete, delete-orphan', backref='task')
     annotators = db.relationship('Annotator', lazy='select', cascade='delete, delete-orphan', backref='task')
-    results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='task')
+    entries = db.relationship('Entry', lazy='select', cascade='delete, delete-orphan', backref='task')
 
     def __init__(self):
         super(AnnotationTask, self).__init__()
@@ -29,7 +32,7 @@ class AnnotationTask(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-def create(crawler_job_id, creator_id, name, anno_type):
+def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=None):
     at = AnnotationTask()
     at.crawler_job_id = crawler_job_id
     at.creator_id = creator_id
@@ -38,6 +41,20 @@ def create(crawler_job_id, creator_id, name, anno_type):
 
     db.session.add(at)
     db.session.commit()
+
+    annotators = list()
+    if number_of_annotators:
+        for i in range(0, number_of_annotators):
+            a = Annotator.create(name=str(i), task_id=at.id)
+            annotators.append(a)
+
+    data = requests.get('http://data_pre:5000/aggregation/' + crawler_job_id + '?output_type=json&aggregation_type=latest').json()
+    for d in data:
+        e = Entry.create(patient_id=d['patient_id'], json=str(d['entries']), task_id=at.id)
+        e.annotators = annotators
+
+    db.session.commit()
+
     return at
 
 
