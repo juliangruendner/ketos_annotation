@@ -262,7 +262,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:5005/annotation_tasks/1/results",
+			"name": "http://localhost:5005/results",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -276,15 +276,13 @@
 					"raw": "{\n\t\"name\":\"Nico\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:5005/annotation_tasks/1/results",
+					"raw": "http://localhost:5005/results",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "5005",
 					"path": [
-						"annotation_tasks",
-						"1",
 						"results"
 					]
 				},
@@ -324,7 +322,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:5005/annotation_tasks/1/results",
+			"name": "http://localhost:5005/results",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -338,15 +336,13 @@
 					"raw": "{\n\t\"scale_entry_id\":1,\n\t\"annotator_id\":1,\n\t\"entry_id\":1\n}"
 				},
 				"url": {
-					"raw": "http://localhost:5005/annotation_tasks/1/results",
+					"raw": "http://localhost:5005/results",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "5005",
 					"path": [
-						"annotation_tasks",
-						"1",
 						"results"
 					]
 				},
