@@ -17,7 +17,6 @@ class AnnotationTask(db.Model):
     scale_entries = db.relationship('ScaleEntry', lazy='select', cascade='delete, delete-orphan', backref='task')
     annotators = db.relationship('Annotator', lazy='select', cascade='delete, delete-orphan', backref='task')
     entries = db.relationship('Entry', lazy='select', cascade='delete, delete-orphan', backref='task')
-    results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='task')
 
     def __init__(self):
         super(AnnotationTask, self).__init__()

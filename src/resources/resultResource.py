@@ -8,7 +8,6 @@ result_fields = {
     'scale_entry_id': fields.Integer,
     'annotator_id': fields.Integer,
     'entry_id': fields.Integer,
-    'task_id': fields.Integer,
     'scale_entry': fields.Nested(scale_entry_fields)
 }
 
@@ -26,10 +25,10 @@ class AnnotationTaskResultListResource(Resource):
         return Result.get_all_for_task(task_id), 200
 
     @marshal_with(result_fields)
-    def post(self, task_id):
+    def post(self):
         args = self.parser.parse_args()
 
-        r = Result.create(scale_entry_id=args['scale_entry_id'], annotator_id=args['annotator_id'], entry_id=args['entry_id'], task_id=task_id)
+        r = Result.create(scale_entry_id=args['scale_entry_id'], annotator_id=args['annotator_id'], entry_id=args['entry_id'])
 
         return r, 201
 

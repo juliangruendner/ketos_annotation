@@ -11,7 +11,6 @@ class Result(db.Model):
     scale_entry_id = db.Column(db.Integer, db.ForeignKey('scale_entry.id'), nullable=False)
     annotator_id = db.Column(db.Integer, db.ForeignKey('annotator.id'), nullable=False)
     entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
-    task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
 
     def __init__(self):
         super(Result, self).__init__()
@@ -27,12 +26,11 @@ class Result(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
-def create(scale_entry_id, annotator_id, entry_id, task_id):
+def create(scale_entry_id, annotator_id, entry_id):
     r = Result()
     r.scale_entry_id = scale_entry_id
     r.annotator_id = annotator_id
     r.entry_id = entry_id
-    r.task_id = task_id
 
     db.session.add(r)
     db.session.commit()
@@ -48,7 +46,7 @@ def get_all():
 
 
 def get_all_for_task(task_id):
-    return Result.query.filter_by(task_id=task_id).all()
+    return Result.query.join(ScaleEntry.ScaleEntry).filter(ScaleEntry.ScaleEntry.task_id == task_id).all()
 
 
 def get_all_for_annotator(annotator_id):
