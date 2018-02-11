@@ -1,6 +1,6 @@
 from flask_restful import fields, marshal_with, reqparse
 from flask_restful_swagger_2 import swagger, Resource
-from resources.scaleEntryResource import scale_entry_fields
+# from resources.scaleEntryResource import scale_entry_fields
 import rdb.models.result as Result
 
 result_fields = {
@@ -8,13 +8,13 @@ result_fields = {
     'scale_entry_id': fields.Integer,
     'annotator_id': fields.Integer,
     'entry_id': fields.Integer,
-    'scale_entry': fields.Nested(scale_entry_fields)
+    # 'scale_entry': fields.Nested(scale_entry_fields)
 }
 
 
-class AnnotationTaskResultListResource(Resource):
+class ResultListResource(Resource):
     def __init__(self):
-        super(AnnotationTaskResultListResource, self).__init__()
+        super(ResultListResource, self).__init__()
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('scale_entry_id', type=int, location='json')
         self.parser.add_argument('annotator_id', type=int, location='json')
@@ -40,3 +40,12 @@ class AnnotatorResultListResource(Resource):
     @marshal_with(result_fields)
     def get(self, annotator_id):
         return Result.get_all_for_annotator(annotator_id), 200
+
+
+class AnnotationTaskResultListResource(Resource):
+    def __init__(self):
+        super(AnnotationTaskResultListResource, self).__init__()
+
+    @marshal_with(result_fields)
+    def get(self, task_id):
+        return Result.get_all_for_task(task_id), 200

@@ -349,6 +349,29 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:5005/annotation_tasks/1/results",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:5005/annotation_tasks/1/results",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"annotation_tasks",
+						"1",
+						"results"
+					]
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
