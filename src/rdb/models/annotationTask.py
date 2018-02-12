@@ -1,7 +1,9 @@
 from rdb.rdb import db
 import rdb.models.entry as Entry
 import rdb.models.annotator as Annotator
+import rdb.models.result as Result
 import requests
+from flask_restful import abort
 
 
 class AnnotationTask(db.Model):
@@ -14,9 +16,9 @@ class AnnotationTask(db.Model):
     creator_id = db.Column(db.Integer)
     name = db.Column(db.Text)
     anno_type = db.Column(db.Integer)
-    scale_entries = db.relationship('ScaleEntry', lazy='select', cascade='delete, delete-orphan', backref='task')
-    annotators = db.relationship('Annotator', lazy='select', cascade='delete, delete-orphan', backref='task')
-    entries = db.relationship('Entry', lazy='select', cascade='delete, delete-orphan', backref='task')
+    scale_entries = db.relationship('ScaleEntry', lazy='select', cascade='all', backref='task')
+    annotators = db.relationship('Annotator', lazy='select', cascade='all', backref='task')
+    entries = db.relationship('Entry', lazy='select', cascade='all', backref='task')
 
     def __init__(self):
         super(AnnotationTask, self).__init__()
@@ -30,6 +32,10 @@ class AnnotationTask(db.Model):
         """Convert object to dictionary"""
 
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+def abort_if_task_doesnt_exist(task_id):
+        abort(404, message="annotation task {} doesn't exist".format(task_id))
 
 
 def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=None):
@@ -58,8 +64,13 @@ def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=Non
     return at
 
 
-def get(id):
-    return AnnotationTask.query.get(id)
+def get(id, raise_abort=True):
+    at = AnnotationTask.query.get(id)
+
+    if not at:
+        abort_if_task_doesnt_exist(id)
+
+    return at
 
 
 def get_all():
@@ -70,11 +81,11 @@ def get_all_for_user(creator_id):
     return AnnotationTask.query.filter_by(creator_id=creator_id).all()
 
 
-def update(id, name=None, anno_type=None):
+def update(id, name=None, anno_type=None, raise_abort=True):
     at = get(id)
 
     if not at:
-        return None
+        return abort_if_task_doesnt_exist(id)
 
     if name:
         at.name = name
@@ -90,7 +101,12 @@ def delete(id):
     at = get(id)
 
     if not at:
-        return None
+        return abort_if_task_doesnt_exist(id)
+
+    for e in at.entries:
+        e.annotators = []
+
+    db.session.commit()
 
     db.session.delete(at)
     db.session.commit()

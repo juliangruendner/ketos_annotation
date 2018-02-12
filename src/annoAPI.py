@@ -6,7 +6,7 @@ from resources.annotationTaskResource import AnnotationTaskResource, AnnotationT
 from resources.entryResource import AnnotationTaskEntryListResource
 from resources.scaleEntryResource import AnnotationTaskScaleEntryListResource
 from resources.annotatorResource import AnnotationTaskAnnotatorListResource
-from resources.resultResource import ResultListResource, AnnotationTaskResultListResource, AnnotatorResultListResource
+from resources.resultResource import AnnotationResultListResource, AnnotationTaskResultListResource, AnnotatorResultListResource
 import json
 import logging
 import logging.config
@@ -28,7 +28,7 @@ api.add_resource(UserAnnotationTaskListResource, '/users/<int:user_id>/annotatio
 api.add_resource(AnnotationTaskEntryListResource, '/annotation_tasks/<int:task_id>/entries', endpoint='entries_for_annotation_task')
 api.add_resource(AnnotationTaskScaleEntryListResource, '/annotation_tasks/<int:task_id>/scale_entries', endpoint='scale_entries_for_annotation_task')
 api.add_resource(AnnotationTaskAnnotatorListResource, '/annotation_tasks/<int:task_id>/annotators', endpoint='annotators_for_annotation_task')
-api.add_resource(ResultListResource, '/results', endpoint='results')
+api.add_resource(AnnotationResultListResource, '/annotation_tasks/results', endpoint='annotation_tasks_results')
 api.add_resource(AnnotatorResultListResource, '/annotators/<int:annotator_id>/results', endpoint='results_for_annotator')
 api.add_resource(AnnotationTaskResultListResource, '/annotation_tasks/<int:task_id>/results', endpoint='results_for_annotation_task')
 

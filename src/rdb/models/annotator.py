@@ -9,8 +9,8 @@ class Annotator(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.Text)
     task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
-    results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='annotator')
-    entries = db.relationship('Entry', lazy=True, secondary='annotator_entries')
+    results = db.relationship('Result', lazy='select', cascade='all', backref='annotator')
+    entries = db.relationship('Entry', lazy='subquery', secondary='annotator_entries')
 
     def __init__(self):
         super(Annotator, self).__init__()

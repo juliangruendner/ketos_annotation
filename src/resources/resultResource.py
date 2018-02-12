@@ -12,9 +12,9 @@ result_fields = {
 }
 
 
-class ResultListResource(Resource):
+class AnnotationResultListResource(Resource):
     def __init__(self):
-        super(ResultListResource, self).__init__()
+        super(AnnotationResultListResource, self).__init__()
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('scale_entry_id', type=int, location='json')
         self.parser.add_argument('annotator_id', type=int, location='json')

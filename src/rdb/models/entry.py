@@ -10,8 +10,8 @@ class Entry(db.Model):
     patient_id = db.Column(db.Integer)
     task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
     json = db.Column(db.Text)
-    results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='entry')
-    annotators = db.relationship('Annotator', lazy=True, secondary='annotator_entries')
+    results = db.relationship('Result', lazy='select', cascade='all', backref='entry')
+    annotators = db.relationship('Annotator', lazy='subquery', secondary='annotator_entries')
 
     def __init__(self):
         super(Entry, self).__init__()

@@ -10,7 +10,7 @@ class ScaleEntry(db.Model):
     name = db.Column(db.Text)
     code = db.Column(db.Text)
     task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
-    results = db.relationship('Result', lazy='select', cascade='delete, delete-orphan', backref='scale_entry')
+    results = db.relationship('Result', lazy='select', cascade='all', backref='scale_entry')
 
     def __init__(self):
         super(ScaleEntry, self).__init__()
