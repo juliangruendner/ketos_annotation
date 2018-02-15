@@ -1,4 +1,5 @@
 from rdb.rdb import db
+import uuid
 
 
 class Annotator(db.Model):
@@ -9,6 +10,7 @@ class Annotator(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.Text)
     task_id = db.Column(db.Integer, db.ForeignKey('annotation_task.id'), nullable=False)
+    token = db.Column(db.Text)
     results = db.relationship('Result', lazy='select', cascade='all', backref='annotator')
     entries = db.relationship('Entry', lazy='subquery', secondary='annotator_entries')
 
@@ -30,6 +32,7 @@ def create(name, task_id, entries=None):
     a = Annotator()
     a.name = name
     a.task_id = task_id
+    a.token = str(uuid.uuid4().hex)
 
     if entries:
         a.entries = entries

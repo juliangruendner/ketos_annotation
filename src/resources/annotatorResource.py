@@ -6,7 +6,8 @@ import rdb.models.annotationTask as AnnotationTask
 annotator_fields = {
     'id': fields.Integer,
     'name': fields.String,
-    'task_id': fields.Integer
+    'task_id': fields.Integer,
+    'token': fields.String
 }
 
 
