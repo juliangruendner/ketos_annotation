@@ -30,3 +30,12 @@ class AnnotationTaskAnnotatorListResource(Resource):
         a = Annotator.create(name=args['name'], task_id=task_id, entries=task.entries)
 
         return a, 201
+
+
+class AnnotatorResource(Resource):
+    def __init__(self):
+        super(AnnotatorResource, self).__init__()
+
+    @marshal_with(annotator_fields)
+    def get(self, token):
+        return Annotator.get_by_token(token), 200

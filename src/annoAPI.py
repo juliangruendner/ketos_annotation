@@ -5,7 +5,7 @@ from flask_cors import CORS
 from resources.annotationTaskResource import AnnotationTaskResource, AnnotationTaskListResource, UserAnnotationTaskListResource
 from resources.entryResource import AnnotationTaskEntryListResource, EntriesForAnnotatorResource
 from resources.scaleEntryResource import AnnotationTaskScaleEntryListResource
-from resources.annotatorResource import AnnotationTaskAnnotatorListResource
+from resources.annotatorResource import AnnotationTaskAnnotatorListResource, AnnotatorResource
 from resources.resultResource import AnnotationResultListResource, AnnotationTaskResultListResource, AnnotatorResultListResource
 import json
 import logging
@@ -32,6 +32,7 @@ api.add_resource(AnnotationResultListResource, '/annotation_tasks/results', endp
 api.add_resource(AnnotatorResultListResource, '/annotators/<int:annotator_id>/results', endpoint='results_for_annotator')
 api.add_resource(AnnotationTaskResultListResource, '/annotation_tasks/<int:task_id>/results', endpoint='results_for_annotation_task')
 api.add_resource(EntriesForAnnotatorResource, '/annotators/<string:token>/entries', endpoint='entries_for_annotators')
+api.add_resource(AnnotatorResource, '/annotators/<string:token>', endpoint='annotator')
 
 
 if __name__ == '__main__':
