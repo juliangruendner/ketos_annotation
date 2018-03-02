@@ -35,7 +35,7 @@ class AnnotationTask(db.Model):
 
 
 def abort_if_task_doesnt_exist(task_id):
-        abort(404, message="annotation task {} doesn't exist".format(task_id))
+    abort(404, message="annotation task {} doesn't exist".format(task_id))
 
 
 def abort_if_crawler_job_doesnt_exist(crawler_job_id):
@@ -54,7 +54,7 @@ def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=Non
 
     resp = requests.get('http://data_pre:5000/aggregation/' + crawler_job_id + '?output_type=json&aggregation_type=latest')
     if not resp:
-        db.session.remove(at)
+        db.session.delete(at)
         db.session.commit()
         abort_if_crawler_job_doesnt_exist(crawler_job_id)
 
