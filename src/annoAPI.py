@@ -3,7 +3,7 @@ from flask_restful_swagger_2 import Api
 from rdb.rdb import connect_to_db, create_all
 from flask_cors import CORS
 from resources.annotationTaskResource import AnnotationTaskResource, AnnotationTaskListResource, UserAnnotationTaskListResource
-from resources.entryResource import AnnotationTaskEntryListResource
+from resources.entryResource import AnnotationTaskEntryListResource, EntriesForAnnotatorResource
 from resources.scaleEntryResource import AnnotationTaskScaleEntryListResource
 from resources.annotatorResource import AnnotationTaskAnnotatorListResource
 from resources.resultResource import AnnotationResultListResource, AnnotationTaskResultListResource, AnnotatorResultListResource
@@ -31,6 +31,7 @@ api.add_resource(AnnotationTaskAnnotatorListResource, '/annotation_tasks/<int:ta
 api.add_resource(AnnotationResultListResource, '/annotation_tasks/results', endpoint='annotation_tasks_results')
 api.add_resource(AnnotatorResultListResource, '/annotators/<int:annotator_id>/results', endpoint='results_for_annotator')
 api.add_resource(AnnotationTaskResultListResource, '/annotation_tasks/<int:task_id>/results', endpoint='results_for_annotation_task')
+api.add_resource(EntriesForAnnotatorResource, '/annotators/<string:token>/entries', endpoint='entries_for_annotators')
 
 
 if __name__ == '__main__':

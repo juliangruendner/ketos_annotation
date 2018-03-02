@@ -1,5 +1,5 @@
 from rdb.rdb import db
-
+import rdb.models.annotator as Annotator
 
 class Entry(db.Model):
     """Entry Class"""
@@ -48,6 +48,11 @@ def get_all():
 
 def get_all_for_task(task_id):
     return Entry.query.filter_by(task_id=task_id).all()
+
+
+def get_all_for_annotator_token(token):
+    annotator = Annotator.get_by_token(token)
+    return annotator.entries
 
 
 def delete(id):

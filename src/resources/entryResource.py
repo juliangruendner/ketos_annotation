@@ -17,3 +17,12 @@ class AnnotationTaskEntryListResource(Resource):
     @marshal_with(entry_fields)
     def get(self, task_id):
         return Entry.get_all_for_task(task_id), 200
+
+
+class EntriesForAnnotatorResource(Resource):
+    def __init__(self):
+        super(EntriesForAnnotatorResource, self).__init__()
+
+    @marshal_with(entry_fields)
+    def get(self, token):
+        return Entry.get_all_for_annotator_token(token), 200

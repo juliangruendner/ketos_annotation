@@ -1,4 +1,5 @@
 from rdb.rdb import db
+import rdb.models.entry as Entry
 
 
 class AnnotatorEntries(db.Model):

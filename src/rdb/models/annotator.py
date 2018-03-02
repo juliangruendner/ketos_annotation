@@ -46,6 +46,10 @@ def get(id):
     return Annotator.query.get(id)
 
 
+def get_by_token(token):
+    return Annotator.query.filter_by(token=token).first()
+
+
 def get_all():
     return Annotator.query.all()
 
