@@ -4,7 +4,7 @@ from rdb.rdb import connect_to_db, create_all
 from flask_cors import CORS
 from resources.annotationTaskResource import AnnotationTaskResource, AnnotationTaskListResource, UserAnnotationTaskListResource
 from resources.entryResource import AnnotationTaskEntryListResource, EntriesForAnnotatorResource
-from resources.scaleEntryResource import AnnotationTaskScaleEntryListResource
+from resources.scaleEntryResource import AnnotationTaskScaleEntryListResource, AnnotationTaskScaleEntry
 from resources.annotatorResource import AnnotationTaskAnnotatorListResource, AnnotatorResource
 from resources.resultResource import AnnotationResultListResource, AnnotationTaskResultListResource, AnnotatorResultListResource
 import json
@@ -33,6 +33,7 @@ api.add_resource(AnnotatorResultListResource, '/annotators/<int:annotator_id>/re
 api.add_resource(AnnotationTaskResultListResource, '/annotation_tasks/<int:task_id>/results', endpoint='results_for_annotation_task')
 api.add_resource(EntriesForAnnotatorResource, '/annotators/<string:token>/entries', endpoint='entries_for_annotators')
 api.add_resource(AnnotatorResource, '/annotators/<string:token>', endpoint='annotator')
+api.add_resource(AnnotationTaskScaleEntry, '/annotation_tasks/<int:task_id>/scale_entries/<int:scale_entry_id>', endpoint='scale_entry')
 
 
 if __name__ == '__main__':
