@@ -4,6 +4,7 @@ import rdb.models.annotator as Annotator
 import rdb.models.result as Result
 import requests
 from flask_restful import abort
+import json
 
 
 class AnnotationTask(db.Model):
@@ -61,7 +62,7 @@ def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=Non
     data = resp.json()
     entries = list()
     for d in data:
-        e = Entry.create(patient_id=d['patient_id'], json=str(d['entries']), task_id=at.id)
+        e = Entry.create(patient_id=d['patient_id'], json=json.dumps(d['entries']), task_id=at.id)
         entries.append(e)
 
     if number_of_annotators:
