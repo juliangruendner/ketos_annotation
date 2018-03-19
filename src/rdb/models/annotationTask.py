@@ -17,6 +17,7 @@ class AnnotationTask(db.Model):
     creator_id = db.Column(db.Integer)
     name = db.Column(db.Text)
     anno_type = db.Column(db.Integer)
+    description = db.Column(db.Text)
     scale_entries = db.relationship('ScaleEntry', lazy='select', cascade='all', backref='task')
     annotators = db.relationship('Annotator', lazy='select', cascade='all', backref='task')
     entries = db.relationship('Entry', lazy='select', cascade='all', backref='task')
@@ -43,12 +44,13 @@ def abort_if_crawler_job_doesnt_exist(crawler_job_id):
     abort(404, message="crawler job {} doesn't exist".format(crawler_job_id))
 
 
-def create(crawler_job_id, creator_id, name, anno_type, number_of_annotators=None):
+def create(crawler_job_id, creator_id, name, anno_type, description, number_of_annotators=None):
     at = AnnotationTask()
     at.crawler_job_id = crawler_job_id
     at.creator_id = creator_id
     at.name = name
     at.anno_type = anno_type
+    at.description = description
 
     db.session.add(at)
     db.session.commit()

@@ -7,6 +7,7 @@ task_fields = {
     'crawler_job_id': fields.String,
     'creator_id': fields.Integer,
     'name': fields.String,
+    'description': fields.String,
     'anno_type': fields.Integer
 }
 
@@ -114,6 +115,9 @@ class AnnotationTaskResource(Resource):
                         "name": {
                             "type": "string"
                         },
+                        "description": {
+                            "type": "string"
+                        },
                         "anno_type": {
                             "type": "integer"
                         }
@@ -137,6 +141,7 @@ class AnnotationTaskListResource(Resource):
         self.parser.add_argument('crawler_job_id', type=str, location='json')
         self.parser.add_argument('creator_id', type=int, location='json')
         self.parser.add_argument('name', type=str, location='json')
+        self.parser.add_argument('description', type=str, location='json')
         self.parser.add_argument('anno_type', type=int, location='json')
         self.parser.add_argument('number_of_annotators', type=int, location='args')
 
@@ -196,6 +201,9 @@ class AnnotationTaskListResource(Resource):
                         "name": {
                             "type": "string"
                         },
+                        "description": {
+                            "type": "string"
+                        },
                         "anno_type": {
                             "type": "integer"
                         }
@@ -207,7 +215,7 @@ class AnnotationTaskListResource(Resource):
     def post(self):
         args = self.parser.parse_args()
 
-        at = AnnotationTask.create(crawler_job_id=args['crawler_job_id'], creator_id=args['creator_id'], name=args['name'], anno_type=args['anno_type'], number_of_annotators=args['number_of_annotators'])
+        at = AnnotationTask.create(crawler_job_id=args['crawler_job_id'], creator_id=args['creator_id'], name=args['name'], anno_type=args['anno_type'], description=args['description'], number_of_annotators=args['number_of_annotators'])
 
         return at, 201
 
