@@ -2,6 +2,9 @@ from flask_restful import fields, marshal_with, reqparse
 from flask_restful_swagger_2 import swagger, Resource
 # from resources.scaleEntryResource import scale_entry_fields
 import rdb.models.result as Result
+import rdb.models.entry as Entry
+import rdb.models.scaleEntry as ScaleEntry
+import fhir_helper
 
 result_fields = {
     'id': fields.Integer,
@@ -113,6 +116,10 @@ class AnnotatorResultListResource(Resource):
 class AnnotationTaskResultListResource(Resource):
     def __init__(self):
         super(AnnotationTaskResultListResource, self).__init__()
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('server_url', type=str, location='json')
+        self.parser.add_argument('code', type=str, location='json')
+        self.parser.add_argument('system', type=str, location='json')
 
     @marshal_with(result_fields)
     @swagger.doc({
@@ -139,3 +146,19 @@ class AnnotationTaskResultListResource(Resource):
     })
     def get(self, task_id):
         return Result.get_all_for_task(task_id), 200
+
+    def post(self, task_id):
+        args = self.parser.parse_args()
+        system = args["system"]
+        code = args["code"]
+        server_url = args["server_url"] 
+        #http://ketos.ai:8080/gtfhir/base/
+
+        results = Result.get_all_for_task(task_id) 
+        
+        for result in results:
+            patient_id = Entry.get(result.entry_id).patient_id
+            result_code = ScaleEntry.get(result.scale_entry_id).code
+            fhir_helper.write(server_url, system, code, patient_id, result_code)
+            
+        return {"success": True}, 201
