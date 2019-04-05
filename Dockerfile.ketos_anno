@@ -1,0 +1,3 @@
+FROM python:3
+ADD src /ketos_anno
+CMD bash -c "cd ketos_anno && chmod +x startup.prod.sh && ./startup.prod.sh"
